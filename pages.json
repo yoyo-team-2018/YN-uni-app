@@ -1,0 +1,137 @@
+{
+	"pages": [
+
+		{
+			"path": "pages/index/index", //海珠防疫通行证(用户)
+			"style": {
+				"navigationBarTextStyle": "black", //全局顶部文字颜色
+				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/index/manager", //海珠防疫通行证(管理人员)
+			"style": {
+				"navigationBarTextStyle": "black", //全局顶部文字颜色
+				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/EPass/qrcode",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/EPass/EPassIndex", //海珠防疫通行证
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": " 穗康码（海珠）",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/EPass/EPassSubmitSuccess",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+
+		//通行记录
+		{
+			"path": "pages/scancode/current-record", //通行记录
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "通行记录",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		// 个人信息
+		{
+			"path": "pages/scancode/person-info", //个人信息
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "个人信息",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		// 操作历史
+		{
+			"path": "pages/operation-history/operation-history", //操作历史
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "操作历史",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		//扫证
+		{
+			"path": "pages/scancode/person", //扫证放行
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "扫证放行",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		// 审核
+		{
+			"path": "pages/examine/examine-list-detail", //通行证审核详情
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "通行证审核",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/examine/examine-list", //通行证审核
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "通行证审核",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},
+		{
+			"path": "pages/scancode/person-address-detail", //通行证审核
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "出入地址详情",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		}
+	    ,{
+            "path" : "pages/agreement/user-service-agreement",
+            "style": {
+            	"navigationBarTextStyle": "black",
+            	"navigationBarTitleText": "用户服务协议",
+            	"navigationBarBackgroundColor": "#fff"
+            }
+        }
+        ,{
+            "path" : "pages/agreement/privacy-policy",
+            "style": {
+            	"navigationBarTextStyle": "black",
+            	"navigationBarTitleText": "隐私政策",
+            	"navigationBarBackgroundColor": "#fff"
+            }
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white", //全局顶部文字颜色
+		// "navigationBarTitleText": "凤凰街",//全局顶部文字
+		"navigationBarBackgroundColor": "#0079FE" //全局顶部背景颜色
+		// "backgroundColor": "#f8f8f8" //全局page背景颜色
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}
