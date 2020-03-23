@@ -3,7 +3,7 @@ import url from './config.js'
 module.exports = {
     http :(router,data={},method)=> {
         // 基础地址
-        let path = url.APIHOST + 'passLink/';
+        let path = url.APIHOST + 'miniProgram/';
         // 返回promise
         return new Promise((resolve,reject) => {
             // 请求

@@ -2,18 +2,18 @@
 	"pages": [
 
 		{
-			"path": "pages/index/index", //海珠防疫通行证(用户)
+			"path": "pages/index/index", //T享家(用户)
 			"style": {
 				"navigationBarTextStyle": "black", //全局顶部文字颜色
-				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarTitleText": "T享家",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
 		{
-			"path": "pages/index/manager", //海珠防疫通行证(管理人员)
+			"path": "pages/index/manager", //T享家(管理人员)
 			"style": {
 				"navigationBarTextStyle": "black", //全局顶部文字颜色
-				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarTitleText": "T享家",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
@@ -21,15 +21,15 @@
 			"path": "pages/EPass/qrcode",
 			"style": {
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarTitleText": "T享家",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
 		{
-			"path": "pages/EPass/EPassIndex", //海珠防疫通行证
+			"path": "pages/EPass/EPassIndex",
 			"style": {
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": " 穗康码（海珠）",
+				"navigationBarTitleText": " T享家",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
@@ -37,7 +37,7 @@
 			"path": "pages/EPass/EPassSubmitSuccess",
 			"style": {
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "穗康码（海珠）",
+				"navigationBarTitleText": "T享家",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
@@ -80,23 +80,23 @@
 		},
 		// 审核
 		{
-			"path": "pages/examine/examine-list-detail", //通行证审核详情
+			"path": "pages/examine/examine-list-detail", //T享家审核详情
 			"style": {
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "通行证审核",
+				"navigationBarTitleText": "详情",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
 		{
-			"path": "pages/examine/examine-list", //通行证审核
+			"path": "pages/examine/examine-list", //T享家审核
 			"style": {
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "通行证审核",
+				"navigationBarTitleText": "审核",
 				"navigationBarBackgroundColor": "#fff"
 			}
 		},
 		{
-			"path": "pages/scancode/person-address-detail", //通行证审核
+			"path": "pages/scancode/person-address-detail", //T享家审核
 			"style": {
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "出入地址详情",

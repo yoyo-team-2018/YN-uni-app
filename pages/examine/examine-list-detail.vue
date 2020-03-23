@@ -51,6 +51,12 @@
 						<text>{{data.renterPhone | tp}}</text>
 						<text class="iconfont icon-fuzhi fuzhi"></text>
 					</view>
+					<view class="row-list">
+						<text class="label">授权照片:</text>
+						<view class="view-img">
+							<image :src="imgSrc" mode="aspectFill" @click="previewImg"></image>
+						</view>
+					</view>
 				</view>
 			</view>
 			<!-- 居住证情况 -->
@@ -73,13 +79,13 @@
 				</view>
 			</view>
 			<!-- 反穗情况 -->
-			<view class="info">
+			<view class="person-info info">
 				<view class="title">返穗情况</view>
 				<view v-if="data.alwaysInGz==1" class="content">
 					<view class="row-list">一直在穗</view>
 				</view>
 				<!-- 信息 -->
-				<view class="content">
+				<view v-else class="content">
 					<view class="row-list">
 						<text class="label">返穗日期:</text>
 						<text>{{data.returnTime | tp}}</text>
@@ -95,6 +101,24 @@
 					<view class="row-list">
 						<text class="label" style="padding-right:8px;">车牌/车次/航班号:</text>
 						<text>{{data.vehicleNum | tp}}</text>
+					</view>
+				</view>
+			</view>
+			<!-- 近期状况 -->
+			<view class="info">
+				<view class="title">近期状况</view>
+				<view class="content">
+					<view class="row-list">
+						<text class="label">个人健康状况:</text>
+						<text>{{data.symptomsName}}</text>
+					</view>
+					<view class="row-list">
+						<text class="label">是否常住广州:</text>
+						<text>{{data.residentFlagName}}</text>
+					</view>
+					<view class="row-list">
+						<text class="label">近期旅居史:</text>
+						<view><text>{{data.travelRegionClassName}}</text></view>
 					</view>
 				</view>
 			</view>
@@ -116,6 +140,9 @@
 <script>
 	import pouple from "@/components/pouple";//输入确定框
 	import confirm from "@/components/confirm";//确定框
+	import {
+		IMAGE_PATH
+	} from '../../common/config.js'
 	export default {
 		components: {
 			pouple,
@@ -144,7 +171,9 @@
 				// 来穗比对结果
 				lsVSdj:"",
 				// 默认审核列表页面跳过来
-				flag:false
+				flag:false,
+				// 图片路径
+				imgSrc: ''
 			};
 		},
 		onLoad(option) {
@@ -161,6 +190,8 @@
 					this.data = result.data;
 					// 居住证信息
 					this.lsData = result.lsdata;
+					// 图片
+					this.imgSrc = IMAGE_PATH + this.data.fid
 					// 如果地址为空
 					if(this.$custom.isEmpty(this.lsData)){
 						// 未在来穗登记
@@ -240,9 +271,16 @@
 				    title: "正在加载中"
 				});
 			},
+			// 复制电话号码
 			copyPhone() {
 				wx.setClipboardData({
 				  data: this.data.renterPhone
+				})
+			},
+			// 查看图片详情
+			previewImg() {
+				uni.previewImage({
+					urls: [this.imgSrc],
 				})
 			}
 		}
@@ -261,28 +299,25 @@
 			padding: 40rpx 30rpx;
 			.title{
 				font-size: $fz18;
-				// &.left-border{
-				// 	position:relative;
-				// 	padding-left:5px;
-				// 	&:after{
-				// 		content: "";
-				// 		display: inline-block;
-				// 		position:absolute;
-				// 		height: 80%;
-				// 		left:0;
-				// 		top:10%;
-				// 		border-left:4px solid #0081ff;
-				// 	}
-				// }
 			}
 			// 列表
 			.row-list{
 				display: flex;
 				padding-top: 10px;
-				align-items:baseline;
+				align-items:center;
 				.label{
-					min-width: calc(4em + 15px);
-					color: $color6;
+					min-width: calc(4em + 20px);
+					color: #aaa;
+					margin-right: 20rpx;
+				}
+				.view-img {
+					padding: 10rpx;
+				
+					image {
+						width: 100rpx;
+						height: 100rpx;
+						border: 2rpx solid #eee;
+					}
 				}
 			}
 		}

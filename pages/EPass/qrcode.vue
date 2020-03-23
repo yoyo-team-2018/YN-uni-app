@@ -6,7 +6,7 @@
 		<scroll-view class="top-box" scroll-y style="height:100%;">
 			<swiper class="card-swiper swiper-centent" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true"
 			 indicator-active-color="#0081ff" :circular="true" indicator-color="#8799a3" duration="500" @change="cardSwiper">
-				<swiper-item v-for="(item,index) in data" :key="index" :class="cardCur==index?'cur':''">
+				<swiper-item v-for="(item,index) in perData" :key="index" :class="cardCur==index?'cur':''">
 					<view class="swiper-item">
 						<image class="code-img" :src="'data:image/png;base64,' + item.QRcode"></image>
 						<!-- 文字说明 -->
@@ -40,19 +40,19 @@
 			<view class="bottom-item">
 				<view class="input-box">
 					<view class="label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</view>
-					<view class="text">{{data[0].data.xm | tp}}</view>
+					<view class="text">{{perData[0].data.xm}}</view>
 				</view>
 				<view class="input-box">
 					<view class="label">电话号码:</view>
-					<view class="text">{{data[0].data.lxdh | tp}}</view>
+					<view class="text">{{perData[0].data.lxdh}}</view>
 				</view>
 				<view class="input-box">
 					<view class="label">身份证号:</view>
-					<view class="text">{{data[0].data.zjhm | tp}}</view>
+					<view class="text">{{perData[0].data.zjhm}}</view>
 				</view>
 				<view class="input-box">
 					<view class="label">居委会:</view>
-					<view class="text">{{data[0].data.jwhName | tp}}</view>
+					<view class="text">{{perData[0].data.jwhName}}</view>
 				</view>
 			</view>
 		</scroll-view>
@@ -69,11 +69,11 @@
 			return {
 				// 通行证状态
 				status: 1,
-				// 数据信息
-				data: "",
+				// 人员信息
+				perData: "",
 				//二维码
 				qrcode: "",
-
+				// 轮播 index
 				cardCur: 0
 			};
 		},
@@ -83,8 +83,10 @@
 		},
 		filters: {
 		  tp: function (value) {
-		    if (value == null || typeof value == undefined) return ''
-			return value
+		    if (value == null || typeof value == undefined) {
+					return ''
+				}
+				return value
 		  }
 		},
 		methods: {
@@ -112,7 +114,7 @@
 						this.navBack()
 						return
 					}
-					this.data = dataList;
+					this.perData = dataList;
 				} else {
 					let _this = this;
 					this.$refs['Message'].error(result.appMsg);
