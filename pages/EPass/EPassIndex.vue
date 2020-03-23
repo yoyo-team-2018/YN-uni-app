@@ -11,16 +11,28 @@
 					<input :value="xm" type="text" name="xm" placeholder="请输入" :class="disabledType ? 'disabledBg' : ''" :disabled="disabledType"></input>
 					<!-- <input value="胖虎" type="text" name="xm"  placeholder="请输入"></input> -->
 				</view>
-				<!-- 身份证号 -->
+				<!-- 证件类型 -->
 				<view class="cu-form-group">
-					<view class="title require-ico">身份证号</view>
-					<input v-model="zjhm" type="idcard" name="zjhm" placeholder="请输入" :class="disabledType ? 'disabledBg' : ''" :disabled="disabledType"></input>
+					<view class="title require-ico">证件类型</view>
+					<picker @change="bindDropChange" data-name="zjlx" :value="zjlxIndex" :range="zjlxList" range-key="dictValue" :disabled="disabledType">
+						<view class="picker" :class="disabledType ? 'disabledBg' : ''">
+							{{zjlxIndex>-1?zjlxList[zjlxIndex].dictValue:'请选择'}}
+						</view>
+					</picker>
+					<!-- 隐藏证件类型提交 -->
+					<input type="text" class="h-input" name="zjlx" :value="zjlx" />
+				</view>
+				<!-- 证件号码 -->
+				<view class="cu-form-group">
+					<view class="title require-ico">证件号码</view>
+					<input v-model="zjhm" type="idcard" name="zjhm" placeholder="请输入" :class="disabledType ? 'disabledBg' : ''"
+					 :disabled="disabledType"></input>
 					<!-- <input value="430725198508152171" type="text" name="zjhm"  placeholder="请输入"></input> -->
 				</view>
 				<!-- 籍贯 -->
 				<view class="cu-form-group">
 					<view class="title require-ico">籍贯</view>
-					<EPassPicker mode="region" name="jg" @change-picker="setChangePicker" ClearBtnFlag="true" :echo="jg"></EPassPicker>
+					<PickerRegion mode="region" name="jg" @change-picker="setChangePicker" ClearBtnFlag="true" :echo="jg"></PickerRegion>
 					<!-- 隐藏籍贯提交 -->
 					<input type="text" class="h-input" name="jg" :value="jg" />
 				</view>
@@ -152,6 +164,13 @@
 					<!-- 隐藏授权对象提交 -->
 					<input type="text" class="h-input" name="sqdx" :value="sqdx" />
 				</view>
+				<!-- 授权进门照片 -->
+				<view class="cu-form-group">
+					<view class="title require-ico">授权进门照片</view>
+					<choose-image @imgSrcBase64="getImgSrcBase64" :echo="fid" />
+					<!-- 隐藏授权对象提交 -->
+					<input type="text" maxlength="-1" class="h-input" name="sqPic" :value="sqPic" />
+				</view>
 				<view class="action margin-top">
 					<text class="cuIcon-titles">返穗情况</text>
 				</view>
@@ -178,7 +197,7 @@
 				<!-- 出发地 -->
 				<view v-if="!isCheckSui" class="cu-form-group">
 					<view class="title require-ico">出发地</view>
-					<EPassPicker mode="region" name="cfd" @change-picker="setChangePicker" ClearBtnFlag="true" :echo="cfd"></EPassPicker>
+					<PickerRegion mode="region" name="cfd" @change-picker="setChangePicker" ClearBtnFlag="true" :echo="cfd"></PickerRegion>
 					<!-- 隐藏出发地提交 -->
 					<input type="text" class="h-input" name="departAddress" :value="cfd" />
 				</view>
@@ -197,6 +216,44 @@
 				<view v-if="!isCheckSui" class="cu-form-group">
 					<view class="title">车牌/车次/航班号</view>
 					<input type="text" placeholder="请输入" name="vehicleNum" v-model="vehicleNum"></input>
+				</view>
+				<view class="action margin-top">
+					<text class="cuIcon-titles">近期状况</text>
+				</view>
+				<!-- 个人健康状况 -->
+				<view class="cu-form-group margin-top">
+					<view class="title require-ico">个人健康状况</view>
+					<picker @change="bindDropChange" data-name="symptoms" :range="symptomsList" range-key="name" :value="symptoms">
+						<view class="picker">
+							{{symptomsIndex>-1?symptomsList[symptomsIndex].name:'请选择'}}
+						</view>
+					</picker>
+					<!-- 隐藏个人健康状况提交 -->
+					<input type="text" class="h-input" name="symptoms" :value="symptoms" />
+					<input type="text" class="h-input" name="symptomsName" :value="symptomsName" />
+				</view>
+				<!-- 是否常住广州 -->
+				<view class="cu-form-group">
+					<view class="title require-ico">是否常住广州</view>
+					<picker @change="bindDropChange" data-name="residentFlag" :range="residentFlagList" range-key="name" :value="residentFlag">
+						<view class="picker">
+							{{residentFlagIndex>-1?residentFlagList[residentFlagIndex].name:'请选择'}}
+						</view>
+					</picker>
+					<!-- 隐藏是否常住广州提交 -->
+					<input type="text" class="h-input" name="residentFlag" :value="residentFlag" />
+					<input type="text" class="h-input" name="residentFlagName" :value="residentFlagName" />
+				</view>
+				<!-- 近期旅居史 -->
+				<view class="cu-form-group">
+					<view class="title require-ico">近期旅居史</view>
+					<view class="mask" @click="openEPassCheckbox"></view>
+					<view class="content">
+						<EPassCheckbox ref="EPassCheckbox" :items="travelRegionClassList" @getCheckboxData="getCheckboxData" :echoName="travelRegionClassName" />
+					</view>
+					<!-- 隐藏近期旅居史提交 -->
+					<input type="text" class="h-input" name="travelRegionClass" :value="travelRegionClass" />
+					<input type="text" class="h-input" name="travelRegionClassName" :value="travelRegionClassName" />
 				</view>
 				<!-- 提交 -->
 				<view class="padding">
@@ -232,19 +289,23 @@
 
 <script>
 	import uniPagination from '@/components/uni-pagination/uni-pagination.vue'
-	import EPassPicker from '@/components/EPass-picker.vue'
+	import PickerRegion from '@/components/Picker-region.vue'
+	import EPassCheckbox from '@/components/EPass-checkbox.vue'
+	import ChooseImage from '@/components/choose-image.vue'
 	import config from '@/common/config.js'
 	import req from '@/common/req.js'
 	export default {
 		components: {
 			uniPagination,
-			EPassPicker
+			PickerRegion,
+			ChooseImage,
+			EPassCheckbox
 		},
 		data() {
 			return {
 				// 在onLoad时传入, 如果有, 意味是update或二次申请出入证, 没有就是第一次申请
 				id: '',
-				
+
 				// 控制是否禁用
 				disabledType: false,
 
@@ -253,66 +314,71 @@
 				zjhm: '', // 证件号码
 				lxdh: '', // 联系电话
 				
+				// 证件类型
+				zjlx: '',
+				zjlxIndex: -1,
+				zjlxList: [],
+
 				// 选择籍贯绑定变量
-				jg: '', 
+				jg: '',
 
 				// checkbox是否租客 默认false
 				isCheckZuke: false,
 				// 是否租客
 				isTenant: 0,
-				
+
 				// 房东姓名和电话
 				renterName: '',
 				renterPhone: '',
-				
+
 				// 地址类型
 				addressTypeIndex: -1,
 				addressType: '',
-				addressTypeList: ['居住地址','工作地址', '来访地址', '其他地址'],
-				
+				addressTypeList: ['居住地址', '工作地址', '来访地址', '其他地址'],
+
 				// 街镇下拉框
 				jzDropList: [],
 				jzList: [],
 				jzCode: '',
 				jzName: '',
 				jzIndex: -1,
-				
+
 				// 居委会下拉框
 				jwhDropList: [],
 				jwhList: [],
 				jwhCode: '',
 				jwhName: '',
 				jwhIndex: -1,
-				
+
 				// 街路巷参数
 				jddm: '', //街路巷编码
 				jddmName: '', //街路巷名称
 				jddmSearch: '', //街路巷搜索名称
-				
+
 				// 门牌
 				mp: '',
 				mph: '',
 				mpName: '',
 				mpSearch: '',
-				
+
 				// 门牌号
 				dong: '',
 				dongName: '',
 				dongSearch: '',
-				
+
 				// 单元
 				tao: '',
 				taoName: '',
 				taoSearch: '',
-				
+
 				// 选项中没有我的房屋地址 默认false
 				isHomeAddress: false,
 				// 居住详址
 				selfCompiledAddress: '',
-				
+
 				// 工作地址
 				workAddress: '',
-				
+
 				// 授权对象
 				sqdxIndex: -1,
 				sqdx: -1,
@@ -346,7 +412,7 @@
 				vehicleList: ['大巴', '火车', '自驾', '飞机', '其他'],
 				vehicle: '', //反穗交通提交字段
 				vehicleIndex: -1, //下拉下标
-				
+
 				// 车牌/车次/航班号
 				vehicleNum: '',
 
@@ -365,85 +431,193 @@
 
 				// 登记数据
 				registerData: '',
-				
+
 				// 模糊搜索input存放值
-				confirmInputData: ''
+				confirmInputData: '',
+
+				// 近期旅居史
+				travelRegionClass: '', // 提交值, 逗号隔开的 travelRegionClassList 的 value
+				travelRegionClassName: '', // 提交值, 逗号隔开的 travelRegionClassList 的 name
+				travelRegionClassList: [{
+					value: 1,
+					name: '武汉',
+					checked: false
+				}, {
+					value: 2,
+					name: '湖北(不包含武汉)',
+					checked: false
+				}, {
+					value: 6,
+					name: '温州市',
+					checked: false
+				}, {
+					value: 3,
+					name: '中国港澳台地区',
+					checked: false
+				}, {
+					value: 4,
+					name: '中国大陆其他省(自治区)市',
+					checked: false
+				}, {
+					value: 5,
+					name: '国外',
+					checked: false
+				}],
+
+				// 个人健康状况
+				symptoms: '',
+				symptomsName: '',
+				symptomsIndex: -1,
+				symptomsList: [{
+					value: 0,
+					name: '无'
+				}, {
+					value: 11,
+					name: '发热37.5 ℃以下'
+				}, {
+					value: 12,
+					name: '发热37.5 ℃（含）以上'
+				}, {
+					value: 13,
+					name: '干咳'
+				}],
+				
+				// 是否常住广州
+				residentFlag: '',
+				residentFlagName: '',
+				residentFlagIndex: -1,
+				residentFlagList: [{
+					value: 1,
+					name: '是'
+				}, {
+					value: 2,
+					name: '否'
+				}],
+				
+				// 授权照片base64
+				sqPic: '',
+				// 回显图片
+				fid: ''
 
 			}
 		},
 		onLoad(val) {
+			// 传入 id 二次登记, 无 id 首次登记
 			if (val.hasOwnProperty('id')) this.id = val.id
-			// 获取登记数据
-			const registerData = this.$store.state.registerData
-			// 回显数据
-			if (!this.$custom.isEmpty(registerData)) {
-			  // 数据回显
-			  this.dataDisplay(registerData)
-				this.disabledType = true
-			} else {
-			  this.registerData = ''
-			}
+			
 			// 初始加载街镇
 			this.getDropJz()
+			// 初始加载证件类型
+			this.getZjlx(() => {
+				// 获取登记数据
+				const registerData = this.$store.state.registerData
+				// 回显数据
+				if (!this.$custom.isEmpty(registerData)) {
+					// 数据回显
+					this.dataDisplay(registerData)
+					// 打开禁用
+					this.disabledType = true
+				} else {
+					this.registerData = ''
+				}
+			})
 		},
 		methods: {
 			// 回显数据
 			dataDisplay(registerData) {
 				this.registerData = registerData[0]
-				this.xm = this.registerData.xm	//姓名
-				this.zjhm = this.registerData.zjhm	//证件号码
-				this.lxdh = this.registerData.lxdh	//联系电话
-				this.jg = this.registerData.jg	// 籍贯
-				this.isTenant = this.registerData.isTenant	// 是否租客
+				this.xm = this.registerData.xm //姓名
+				this.zjlx = this.registerData.zjlx	// 证件类型
+				// 回显证件类型滚动选择器 start
+				this.zjlxIndex = this.zjlxList.findIndex(({
+					dictCode
+				}, index, arr) => {
+					return dictCode == this.zjlx
+				})
+				// 回显证件类型滚动选择器 end
+				this.zjhm = this.registerData.zjhm //证件号码
+				this.lxdh = this.registerData.lxdh //联系电话
+				this.jg = this.registerData.jg // 籍贯
+				this.isTenant = this.registerData.isTenant // 是否租客
 				if (this.isTenant == 1) {
-					this.isCheckZuke = true	// 勾选为租客
-					this.renterName = this.registerData.renterName	// 房东姓名
-					this.renterPhone = this.registerData.renterPhone	// 房东电话
+					this.isCheckZuke = true // 勾选为租客
+					this.renterName = this.registerData.renterName // 房东姓名
+					this.renterPhone = this.registerData.renterPhone // 房东电话
 				} else if (this.isTenant == 0) {
-					this.isCheckZuke = false	// 不勾选租客
+					this.isCheckZuke = false // 不勾选租客
 				}
-				this.selfCompiledAddress = this.registerData.selfCompiledAddress	// 居住详址
-				this.selfCompiledAddress ? this.isHomeAddress = true : this.isHomeAddress = false	// 居住详址勾选框回显
-				this.workAddress = this.registerData.workAddress	// 工作地址
-				this.sqdx = this.registerData.sqdx	// 授权对象
+				this.selfCompiledAddress = this.registerData.selfCompiledAddress // 居住详址
+				this.selfCompiledAddress ? this.isHomeAddress = true : this.isHomeAddress = false // 居住详址勾选框回显
+				this.workAddress = this.registerData.workAddress // 工作地址
+				this.sqdx = this.registerData.sqdx // 授权对象
 				// 回显授权对象滚动选择器 start
-				this.sqdxIndex = this.sqdxList.findIndex(({ value, name }, index, arr) => {
+				this.sqdxIndex = this.sqdxList.findIndex(({
+					value,
+					name
+				}, index, arr) => {
 					return value == this.sqdx
 				})
 				this.sqdxName = this.sqdxList[this.sqdxIndex].name
 				// 回显授权对象滚动选择器 end
-				this.alwaysInGz = this.registerData.alwaysInGz	// 是否一直在穗 0 => 否 1 => 是
+				this.alwaysInGz = this.registerData.alwaysInGz // 是否一直在穗 0 => 否 1 => 是
 				if (this.alwaysInGz == 0) {
 					this.isCheckSui = false
-					this.returnTime = this.registerData.returnTime.split(' ')[0]	// 返穗时间
-					this.cfd = this.registerData.departAddress	// 出发地
+					this.returnTime = this.registerData.returnTime.split(' ')[0] // 返穗时间
+					this.cfd = this.registerData.departAddress // 出发地
 					this.vehicle = this.registerData.vehicle
 					// 回显返穗交通工具滚动选择器 start
 					this.vehicleIndex = this.vehicle - 1
 					// 回显返穗交通工具滚动选择器 end
-					this.vehicleNum = this.registerData.vehicleNum	// 车牌号码
+					this.vehicleNum = this.registerData.vehicleNum // 车牌号码
 				} else if (this.alwaysInGz == 1) {
 					this.isCheckSui = true
 				}
+				this.fid = this.registerData.fid	// 回显图片
+				this.symptoms = this.registerData.symptoms	// 个人健康状况
+				// 回显个人健康状况滚动选择器 start
+				this.symptomsIndex = this.symptomsList.findIndex(({
+					value
+				}, index, arr) => {
+					return value == this.symptoms
+				})
+				// 回显个人健康状况滚动选择器 end
+				this.residentFlag = this.registerData.residentFlag	// 是否常住广州
+				// 回显个人健康状况滚动选择器 start
+				this.residentFlagIndex = this.residentFlagList.findIndex(({
+					value
+				}, index, arr) => {
+					return value == this.residentFlag
+				})
+				// 回显个人健康状况滚动选择器 end
+				this.travelRegionClass = this.registerData.travelRegionClass
+				this.travelRegionClassName = this.registerData.travelRegionClassName
+				this.travelRegionClassFmt()
 			},
 			// 提交请求
 			formSubmit(e) {
 				let data = e.detail.value
 				console.log(data)
+				// this.$store.dispatch('refreshRegisterStatus', 1)
+				// this.$routes.redTo('/pages/index/index')
+				// return
 				if (this.$custom.isEmpty(data.xm)) {
 					this.$refs['Message'].error('请输入姓名')
 					return false
 				}
+				if (this.$custom.isEmpty(data.zjlx)) {
+					this.$refs['Message'].error('请选择证件类型')
+					return false
+				}
 				if (this.$custom.isEmpty(data.zjhm)) {
-					this.$refs['Message'].error('请输入身份证号')
+					this.$refs['Message'].error('请输入证件号码')
 					return false
 				}
-				if (
-					/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm) === false
-				) {
-					this.$refs['Message'].error('身份证输入不合法')
-					return false
-				}
+				// if (
+				// 	/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm) === false
+				// ) {
+				// 	this.$refs['Message'].error('身份证输入不合法')
+				// 	return false
+				// }
 				if (this.$custom.isEmpty(data.jg)) {
 					this.$refs['Message'].error('请选择籍贯')
 					return false
@@ -523,7 +697,11 @@
 					}
 				}
 				if (this.$custom.isEmpty(data.sqdx)) {
-					this.$refs['Message'].error('请选授权对象')
+					this.$refs['Message'].error('请选择授权对象')
+					return false
+				}
+				if (this.$custom.isEmpty(this.fid) && this.$custom.isEmpty(this.sqPic)) {
+					this.$refs['Message'].error('请选择授权图片')
 					return false
 				}
 				// 如果没有勾选一直在穗,就验证   1在穗  0不在穗
@@ -544,6 +722,18 @@
 					// 清空反穗日期
 					data.returnTime = ''
 				}
+				if (this.$custom.isEmpty(data.symptoms)) {
+					this.$refs['Message'].error('请选择个人健康状况')
+					return false
+				}
+				if (this.$custom.isEmpty(data.residentFlag)) {
+					this.$refs['Message'].error('请选择是否常住广州')
+					return false
+				}
+				if (this.$custom.isEmpty(data.travelRegionClass)) {
+					this.$refs['Message'].error('请选择近期旅游史')
+					return false
+				}
 				// 证件号码转大写
 				data.zjhm = data.zjhm.toUpperCase()
 
@@ -554,7 +744,7 @@
 					title: '提交中!',
 					mask: true
 				})
-				if(this.id == '') {
+				if (this.id == '') {
 					req.http('save', data, 'post').then(data => {
 						uni.hideLoading()
 						if (data.appCode == 1) {
@@ -892,6 +1082,16 @@
 					}
 				}
 			},
+			// 获取证件类型字典
+			async getZjlx(callback) {
+				const {
+					data
+				} = await this.$request.post(
+					this.$api.getZjlx
+				)
+				this.zjlxList = data
+				callback()
+			},
 			// 点击分页
 			jumpPage(e) {
 				// 如果有数据
@@ -919,6 +1119,10 @@
 				let dropIndex = e.detail.value //下标位置
 				let dropName = e.currentTarget.dataset.name //下拉框识别名称
 				switch (dropName) {
+					case 'zjlx':
+						this.zjlxIndex = dropIndex //显示的值
+						this.zjlx = this.zjlxList[this.zjlxIndex].dictCode //提交的值
+						break
 					case 'date': //返穗日期
 						this.date = dropIndex //显示的值
 						this.returnTime = dropIndex //提交的值
@@ -990,6 +1194,17 @@
 						this.addressTypeIndex = dropIndex
 						this.addressType = this.addressTypeList[this.addressTypeIndex] //提交的值
 						break
+					case 'symptoms':	// 个人健康状况
+						this.symptomsIndex = dropIndex
+						const data = this.symptomsList[this.symptomsIndex]
+						this.symptoms = data.value.toString() //提交的值
+						this.symptomsName = data.name.toString() //提交的值
+						break
+					case 'residentFlag':	// 是否常住广州
+						this.residentFlagIndex = dropIndex
+						this.residentFlag = this.residentFlagList[this.residentFlagIndex].value //提交的值
+						this.residentFlagName = this.residentFlagList[this.residentFlagIndex].name //提交的值
+						break
 				}
 			},
 			//---------------下拉框事件结束------------
@@ -1016,7 +1231,7 @@
 			// 街路巷模糊搜索
 			SearchConfirm(e) {
 				const value = e.detail.value
-				switch(this.status) {
+				switch (this.status) {
 					case 'jddm':
 						this.jddmSearch = value
 						this.searchJddm()
@@ -1033,6 +1248,30 @@
 			},
 			setChangePicker(val) {
 				this[val.name] = val.ChangeArray
+			},
+			// 打开多选下拉框
+			openEPassCheckbox() {
+				this.$refs.EPassCheckbox.open()
+			},
+			// 获取下拉框选中的 data
+			getCheckboxData(val) {
+				this.travelRegionClass = val.value
+				this.travelRegionClassName = val.name
+			},
+			// 获取 choose-image 组件传出来的 img的 base64
+			getImgSrcBase64(val) {
+				this.sqPic = val
+			},
+			// 格式化回显的近期旅游史
+			travelRegionClassFmt() {
+				const arr = this.travelRegionClass.split(',')
+				for(const [key, value] of this.travelRegionClassList.entries()) {
+					for(const i of arr) {
+						if (i == value.value) {
+							value.checked = true
+						}
+					}
+				}
 			}
 		}
 	}
@@ -1043,12 +1282,28 @@
 		.disabledBg {
 			color: #a5a5a5;
 		}
+
 		// 行区域
 		.cu-form-group {
+			position: relative;
 
 			// label宽度
 			.title {
 				min-width: calc(5em + 15px);
+			}
+
+			.content {
+				flex: 1;
+				text-align: right;
+			}
+
+			.mask {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 10;
 			}
 
 			// 文字对齐

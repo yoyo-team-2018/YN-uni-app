@@ -17,15 +17,21 @@
 		data() {
 			return {
 				textFlag: false,
-				initArray: ['北京市', '北京市', '东城区'],
+				initArray: ['北京市', '北京市', '东城区'],	// mode 为 region 的默认值
 				ChangeArray: [],
 				index: 0,
-				nowDate: this.$custom.getYMD()
+				nowDate: this.$custom.getYMD()	// mode 为 date 的默认值
 			};
 		},
 		props: {
-			mode: String, // picker 的类型
-			name: String, // 调用的类型
+			mode: {	// picker 的类型
+				type: String,
+				required: true
+			}, 
+			name: {	// 调用的标识
+				type: String,
+				required: true
+			},
 			ClearBtnFlag: Boolean, // 显隐清空按钮
 			echo: String, // 数据回显
 		},
@@ -43,7 +49,7 @@
 			bindPickerChange(e) {
 				this.textFlag = true
 				this.ChangeArray = e.detail.value,
-					this.changePicker()
+				this.changePicker()
 			},
 			clearCFDAddress() {
 				// 切换隐藏内容

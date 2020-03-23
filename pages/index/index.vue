@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="bg-img-box">
-			<image class="bg-box" src="../../static/bg.png"></image>
+			<image class="bg-box" src="../../static/banner.jpg"></image>
 			<!-- <view class="title">前进邻好&nbsp;&nbsp;&nbsp;一码回家</view>
 			<view class="info">
 				<view class="left-box">
@@ -30,8 +30,8 @@
 			<view class="list-box" @click="navPersonZJ">
 				<image src="../../static/wd.png"></image>
 				<view>
-					<view class="title">我的穗康码（海珠）</view>
-					<view class="grey">查看我的穗康码（海珠）</view>
+					<view class="title">我的通行证</view>
+					<view class="grey">查看我的通行证</view>
 				</view>
 			</view>
 			<view class="list-box" @click="navPersonInfo">
@@ -59,7 +59,7 @@
 				<view class="auth-title-box">
 					<view class="left-box">
 						<!-- <image src="../../static/icon.jpg" mode="aspectFill"></image> -->
-						<text class="title">海珠防疫通行证</text>
+						<text class="title">通行证</text>
 						<text class="info">申请使用</text>
 					</view>
 					<view class="right-box"></view>
@@ -96,7 +96,7 @@
 				// 默认不显示登记按钮
 				register: false,
 				// 申请通行证
-				registerBtnName: "申请穗康码（海珠）",
+				registerBtnName: "申请通行证",
 				// 是否同意用户协议
 				isConsentAgreements: false
 			};
@@ -159,7 +159,7 @@
 					code: code
 				});
 				if (res.appCode === 1) {
-					this.openId = res.data.openid;
+					this.openId = res.data.openid; 
 					// 保存openid到状态
 					this.$store.dispatch('refreshOpenId', this.openId);
 					if (this.$custom.isEmpty(res.data.openid)) {
@@ -172,10 +172,10 @@
 						// 如果没有登录 提示
 						if (this.$store.state.registerStatus == 0) {
 							this.$refs['Message'].success("授权登录成功");
-							// 跳转页面
-							this.navDistPage(res.data.openid);
+							
 						}
-
+						// 跳转页面
+						this.navDistPage(res.data.openid);
 					}
 				}
 			},
@@ -201,17 +201,17 @@
 						this.$store.dispatch('refreshRegisterData', result.data);
 
 						//checkStatus  1代表登记过，但是审核不通过，需要重新登记
-						if (result.data.checkStatus == 1) {
-							this.registerBtnName = "申请多个穗康码（海珠）";
+						if (result.data.length > 0) {
+							this.registerBtnName = "申请多个通行证";
 							this.register = true;
 						} else {
-							this.registerBtnName = "申请穗康码（海珠）";
+							this.registerBtnName = "申请通行证";
 							this.register = false;
 						}
 					} else {
 						/// -1未登记
 						this.register = true;
-						this.registerBtnName = "申请穗康码（海珠）";
+						this.registerBtnName = "申请通行证";
 						// 保存用户登记数据到状态
 						this.$store.dispatch('refreshRegisterData', "");
 					}
@@ -292,7 +292,7 @@
 	.bg-img-box {
 		.bg-box {
 			width: 100%;
-			height: 240px;
+			height: 380rpx;
 		}
 	}
 

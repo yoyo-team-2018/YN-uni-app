@@ -18,6 +18,7 @@ module.exports = {
 	getZhid:"passReport/getZhid",//门牌号
 	getFhid:"passReport/getFhid",//单元
 	getPersonByZjhm:"passReport/getPersonByZjhm",//获取来穗【人员信息】
+	getZjlx:"miniProgram/getZjlx",//获取证件类型
 	// +-------------------
 	// |管理员相关接口
 	// +-------------------
