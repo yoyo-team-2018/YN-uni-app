@@ -30,7 +30,6 @@ module.exports = {
 	getRegisterLog:"passReport/getRegisterLog",//管理员操作放行记录
 	getCheckLog:"passReport/getCheckLog",//管理员操作审核记录
 	
-	
 	// +-------------------
 	// |用户相关接口
 	// +-------------------

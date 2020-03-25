@@ -8,7 +8,7 @@
 			<!-- 循环按钮 -->
 			<view class="list-box" v-for="(items,index) in btnList" :key="items.menuId" @click.stop="clickItem(items.menuCode)">
 				<image :src="imgPrefix+items.menuCode+imgSuffix"></image>
-				<view>
+				<view class="list-container">
 					<view class="title">{{items.menuName}}</view>
 					<view class="grey">{{items.remark}}</view>
 				</view>
@@ -17,7 +17,7 @@
 			<view v-if="register" class="list-box" @click="navRegister">
 				<!-- <view class="list-box"  @click="navRegister"> -->
 				<image src="../../static/register.png"></image>
-				<view>
+				<view class="list-container">
 					<view class="title">{{registerBtnName}}</view>
 					<view class="grey">填写个人相关信息</view>
 				</view>
@@ -25,41 +25,25 @@
 
 			<view class="list-box" @click="navPersonInfo">
 				<image src="../../static/person.png"></image>
-				<view>
+				<view class="list-container">
 					<view class="title">个人信息</view>
 					<view class="grey">查看个人的详细信息</view>
 				</view>
 			</view>
 			<view class="list-box" @click="navPersonZJ">
 				<image src="../../static/wd.png"></image>
-				<view>
+				<view class="list-container">
 					<view class="title">我的通行证</view>
 					<view class="grey">查询我的通行证</view>
 				</view>
 			</view>
 			<view class="list-box" @click.stop="navExitRecord">
 				<image src="../../static/txjl.png"></image>
-				<view>
+				<view class="list-container">
 					<view class="title">通行记录</view>
 					<view class="grey">查看个人的通行记录</view>
 				</view>
 			</view>
-
-			<!-- <view class="list-box" @click="navTongxing">
-				<image  src="../../static/sh.png"></image>
-				<view>
-					<view class="title">通行证审核</view>
-					<view class="grey">审核初次办理的通行证</view>
-				</view>
-			</view>
-			<view class="list-box" @click="navCaozuo">
-				<image src="../../static/czls.png"></image>
-				<view>
-					<view class="title">操作历史</view>
-					<view class="grey">查看我的放行、审核记录</view>
-				</view>
-			</view> -->
-
 		</view>
 		<!-- confirm模块 -->
 		<confirm v-on:confirm="confirm" ref="confirm"></confirm>
@@ -280,7 +264,9 @@
 			margin-bottom: 40rpx;
 			color: #333;
 			align-items: center;
-
+			.list-container {
+				flex: 1;
+			}
 			&:active {
 				background-color: rgba(240, 240, 240, 0.7);
 			}
