@@ -574,6 +574,7 @@
 				}
 				this.fid = this.registerData.fid	// 回显图片
 				this.symptoms = this.registerData.symptoms	// 个人健康状况
+				this.symptomsName = this.registerData.symptomsName
 				// 回显个人健康状况滚动选择器 start
 				this.symptomsIndex = this.symptomsList.findIndex(({
 					value
@@ -582,16 +583,19 @@
 				})
 				// 回显个人健康状况滚动选择器 end
 				this.residentFlag = this.registerData.residentFlag	// 是否常住广州
-				// 回显个人健康状况滚动选择器 start
+				this.residentFlagName = this.registerData.residentFlagName
+				// 回显常住广州滚动选择器 start
 				this.residentFlagIndex = this.residentFlagList.findIndex(({
 					value
 				}, index, arr) => {
 					return value == this.residentFlag
 				})
-				// 回显个人健康状况滚动选择器 end
+				// 回显常住广州滚动选择器 end
+				// 回显近期旅居史滚动选择器 start
 				this.travelRegionClass = this.registerData.travelRegionClass
 				this.travelRegionClassName = this.registerData.travelRegionClassName
 				this.travelRegionClassFmt()
+				// 回显近期旅居史滚动选择器 start
 			},
 			// 提交请求
 			formSubmit(e) {
