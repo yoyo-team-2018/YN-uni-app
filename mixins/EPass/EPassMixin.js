@@ -186,8 +186,8 @@ const mixin = {
 			fid: '',
 			
 			// 是否居住多个地址
-			sftz: '1',
-			sftzIndex: 1,
+			sftz: '0',
+			sftzIndex: 0,
 			sftzList: [
 				{
 					value: 0,
