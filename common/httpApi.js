@@ -19,6 +19,7 @@ module.exports = {
 	getFhid:"passReport/getFhid",//单元
 	getPersonByZjhm:"passReport/getPersonByZjhm",//获取来穗【人员信息】
 	getZjlx:"miniProgram/getZjlx",//获取证件类型
+	getSqdx:"miniProgram/getSqdx",//获取授权对象
 	// +-------------------
 	// |管理员相关接口
 	// +-------------------
@@ -29,6 +30,7 @@ module.exports = {
 	register:"passLink/register",//扫码登记入门
 	getRegisterLog:"passReport/getRegisterLog",//管理员操作放行记录
 	getCheckLog:"passReport/getCheckLog",//管理员操作审核记录
+	getAllCheckList:"miniProgram/getAllCheckList",//管理员获取全部授权信息
 	
 	// +-------------------
 	// |用户相关接口

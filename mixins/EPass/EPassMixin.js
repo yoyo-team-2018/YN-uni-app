@@ -81,19 +81,7 @@ const mixin = {
 			sqdxIndex: -1,
 			sqdx: -1,
 			sqdxName: '',
-			sqdxList: [{
-					value: 1,
-					name: '出租屋租客'
-				},
-				{
-					value: 2,
-					name: '出租屋房东'
-				},
-				{
-					value: 0,
-					name: '自住业主'
-				}
-			],
+			sqdxList: [],
 	
 			//出发地
 			cfd: '',
@@ -195,8 +183,21 @@ const mixin = {
 			// 授权照片base64
 			sqPic: '',
 			// 回显图片
-			fid: ''
-	
+			fid: '',
+			
+			// 是否居住多个地址
+			sftz: '1',
+			sftzIndex: 1,
+			sftzList: [
+				{
+					value: 0,
+					name: '否'
+				},
+				{
+					value: 1,
+					name: '是',
+				}
+			]
 		}
 	},
 	computed: {
@@ -217,8 +218,8 @@ const mixin = {
 	},
 	methods: {
 		// 回显数据
-		dataDisplay(registerData) {
-			this.registerData = registerData[0]
+		dataDisplay(registerData, callback = () => {}) {
+			this.registerData = registerData
 			this.xm = this.registerData.xm //姓名
 			this.zjlx = this.registerData.zjlx	// 证件类型
 			// 回显证件类型滚动选择器 start
@@ -289,6 +290,15 @@ const mixin = {
 			this.travelRegionClassName = this.registerData.travelRegionClassName
 			this.travelRegionClassFmt()
 			// 回显近期旅居史滚动选择器 start
+			this.sftz = this.registerData.sftz	// 是否居住多个地址
+			// 回显是否居住多个地址滚动选择器 start
+			this.sftzIndex = this.sftzList.findIndex(({
+				value
+			}, index, arr) => {
+				return value == this.sftz
+			})
+			// 回显是否居住多个地址滚动选择器 end
+			callback()
 		},
 		// 街路巷输入清空
 		changeJlx() {
@@ -548,6 +558,10 @@ const mixin = {
 					this.residentFlagIndex = dropIndex
 					this.residentFlag = this.residentFlagList[this.residentFlagIndex].value //提交的值
 					this.residentFlagName = this.residentFlagList[this.residentFlagIndex].name //提交的值
+					break
+				case 'sftz':
+					this.sftzIndex = dropIndex
+					this.sftz = this.sftzList[this.sftzIndex].value.toString()
 					break
 			}
 		},

@@ -119,11 +119,23 @@
             	"navigationBarBackgroundColor": "#fff"
             }
         }
+        ,{
+            "path" : "pages/author-other/author-other",
+            "style" : {
+							"navigationBarTitleText": "授权其他用户"
+						}
+        }
+        ,{
+            "path" : "pages/Pass-link-check/Pass-link-check",
+            "style" : {
+							"navigationBarTitleText": "授权用户列表"
+						}
+        }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "white", //全局顶部文字颜色
+		"navigationBarTextStyle": "black", //全局顶部文字颜色
 		// "navigationBarTitleText": "凤凰街",//全局顶部文字
-		"navigationBarBackgroundColor": "#0079FE" //全局顶部背景颜色
+		"navigationBarBackgroundColor": "#fff" //全局顶部背景颜色
 		// "backgroundColor": "#f8f8f8" //全局page背景颜色
 	},
 	"condition": { //模式配置，仅开发期间生效

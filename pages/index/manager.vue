@@ -149,6 +149,12 @@
 					case "czls":
 						_this.navCaozuo(); //操作历史
 						break;
+					case "authorOther":
+						_this.navAuthorOther(); //授权其他用户
+						break;
+					case "passLinkCheck":
+						_this.navPassLinkCheck(); //通行证修改查询
+						break;
 				}
 			},
 			// 登记
@@ -170,6 +176,14 @@
 			// 操作历史
 			navCaozuo() {
 				this.navToPage('operation-history/operation-history');
+			},
+			// 授权其他用户
+			navAuthorOther() {
+				this.navToPage('author-other/author-other');
+			},
+			// 通行证修改查询
+			navPassLinkCheck() {
+				this.navToPage('Pass-link-check/Pass-link-check');
 			},
 			// 我的通行证
 			navPersonZJ() {

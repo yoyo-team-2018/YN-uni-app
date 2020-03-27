@@ -110,8 +110,12 @@
 
 				if (appCode == 1) {
 					if (dataList.length == 0) {
+						let _this = this;
 						this.$refs['Message'].error('未登记人员信息');
-						this.navBack()
+						let timeout = setTimeout(function() {
+							_this.$routes.navBack();
+							clearTimeout(timeout);
+						}, 3000);
 						return
 					}
 					this.perData = dataList;

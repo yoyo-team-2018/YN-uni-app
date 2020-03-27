@@ -12,7 +12,7 @@
 					</view>
 					<view class="row-list">
 						<text class="label">证件类型:</text>
-						<text>{{personnelInfo.zjlx}}</text>
+						<text>{{personnelInfo.zjlx_dict}}</text>
 					</view>
 					<view class="row-list">
 						<text class="label">证件号码:</text>

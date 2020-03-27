@@ -154,13 +154,28 @@ const EPassLoadDataMixin = {
 			}
 		},
 		// 获取证件类型字典
-		async getZjlx(callback) {
+		async getZjlx(callback = () => {}) {
 			const {
 				data
 			} = await this.$request.post(
 				this.$api.getZjlx
 			)
 			this.zjlxList = data
+			callback()
+		},
+		// 获取授权对象字典
+		async getSqdx(callback = () => {}) {
+			const {
+				data
+			} = await this.$request.post(
+				this.$api.getSqdx
+			)
+			for(const i of data) {
+				this.sqdxList.push({
+					name: i.dictValue,
+					value: i.dictCode
+				})
+			}
 			callback()
 		},
 	}

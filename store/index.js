@@ -82,7 +82,8 @@ const store = new Vuex.Store({
 		// 登记信息用于重新申请通行证是回显数据
 		registerData:"",
 		//  默认没有登记 默认没有登记0
-		registerStatus:0
+		registerStatus:0,
+		authorOtherData: {}
 	},
 	mutations: {
 		// +------------------
@@ -121,6 +122,12 @@ const store = new Vuex.Store({
 		refreshRegisterStatus(state,status){
 			state.registerStatus = status;
 		},
+		
+		refreshAuthorOtherData(state,status){
+			state.authorOtherData = {
+				...status
+			};
+		},
 	},
 	actions: {
 		// +------------------
@@ -158,6 +165,10 @@ const store = new Vuex.Store({
 		// +------------------
 		refreshRegisterStatus(context,status){
 			context.commit('refreshRegisterStatus',status);
+		},
+		
+		refreshAuthorOtherData(context,status){
+			context.commit('refreshAuthorOtherData',status);
 		},
 		
 	}

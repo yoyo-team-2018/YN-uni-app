@@ -14,7 +14,8 @@
 				<!-- 证件类型 -->
 				<view class="cu-form-group">
 					<view class="title require-ico">证件类型</view>
-					<picker @change="bindDropChange" data-name="zjlx" :value="zjlxIndex" :range="zjlxList" range-key="dictValue" :disabled="disabledType">
+					<picker @change="bindDropChange" data-name="zjlx" :value="zjlxIndex" :range="zjlxList" range-key="dictValue"
+					 :disabled="disabledType">
 						<view class="picker" :class="disabledType ? 'disabledBg' : ''">
 							{{zjlxIndex>-1?zjlxList[zjlxIndex].dictValue:'请选择'}}
 						</view>
@@ -294,6 +295,9 @@
 	import req from '@/common/req.js'
 	import EPassMixin from '../../mixins/EPass/EPassMixin.js'
 	import EPassLoadDataMixin from '../../mixins/EPass/EPassLoadDataMixin.js'
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		components: {
 			uniPagination,
@@ -302,37 +306,85 @@
 			EPassCheckbox
 		},
 		mixins: [EPassMixin, EPassLoadDataMixin],
-		onLoad(val) {
-			// 传入 id 二次登记, 无 id 首次登记
-			if (val.hasOwnProperty('id')) this.id = val.id
-			
-			// 初始加载街镇
-			this.getDropJz()
-			// 初始加载证件类型
-			this.getZjlx(() => {
-				this.getSqdx(() => {
-					// 获取登记数据
-					const registerData = this.$store.state.registerData
-					// 回显数据
-					if (!this.$custom.isEmpty(registerData)) {
-						// 数据回显
-						this.dataDisplay(registerData[0])
-						// 打开禁用
-						this.disabledType = true
-					} else {
-						this.registerData = ''
-					}
-				})
-			})
+		computed: mapState([
+			'authorOtherData'
+		]),
+		onLoad(val) {;
+			(async () => {
+				const listData = this.authorOtherData
+				// 传入 id 二次登记, 无 id 首次登记
+				if (listData.hasOwnProperty('id')) {
+					this.id = listData.id
+					uni.setNavigationBarTitle({
+						title: '修改用户授权信息'
+					});
+				}
+				// 初始加载街镇
+				await this.getDropJz()
+				// 初始加载证件类型
+				await this.getZjlx()
+				await this.getSqdx()
+
+				// 回显数据
+				if (!this.$custom.isEmpty(listData)) {
+					// 数据回显
+					this.dataDisplay(listData, async () => {
+						// 地址类型 start
+						this.addressType = listData.addressType
+						this.addressTypeIndex = this.addressTypeList.findIndex((item, index, arr) => {
+							return item == this.addressType
+						})
+						// 地址类型 end
+						// 街镇 start
+						this.jzCode = listData.jz
+						this.jzName = listData.jzName
+						this.jzIndex = this.jzList.findIndex(({
+							jzmc,
+							jzdm
+						}, index, arr) => {
+							return jzdm == this.jzCode
+						})
+						// 街镇 end
+
+						// 居委会 start
+						await this.getDropJwh()
+						this.jwhCode = listData.jwh
+						this.jwhName = listData.jwhName
+						this.jwhIndex = this.jwhList.findIndex(({
+							jwhmc,
+							jwhdm
+						}, index, arr) => {
+							return jwhdm == this.jwhCode
+						})
+						// 居委会 end
+
+						if (!listData.canShowHomeAddress && listData.isHomeAddress) { // 授权角色为房东或租客 且 选项中没有我的地址
+							this.selfCompiledAddress = listData.selfCompiledAddress
+						} else {
+							// 街路巷
+							this.jddm = listData.jddm
+							this.jddmName = listData.jddmName
+							// 门牌号
+							this.mp = listData.mpid
+							this.mph = listData.mph
+							this.dong = listData.zhid
+							this.dongName = listData.jddmName + listData.mph
+							// 单元
+							this.tao = listData.fhid
+							this.taoName = listData.dy
+						}
+					})
+					// 打开禁用
+					this.disabledType = true
+				}
+			})()
+
 		},
 		methods: {
 			// 提交请求
 			formSubmit(e) {
 				let data = e.detail.value
 				console.log(data)
-				// this.$store.dispatch('refreshRegisterStatus', 1)
-				// this.$routes.redTo('/pages/index/index')
-				// return
 				if (this.$custom.isEmpty(data.xm)) {
 					this.$refs['Message'].error('请输入姓名')
 					return false
@@ -478,12 +530,12 @@
 					mask: true
 				})
 				if (this.id == '') {
-					req.http('save', data, 'post').then(data => {
+					req.http('savePassLinkByAdmin', data, 'post').then(data => {
 						uni.hideLoading()
 						if (data.appCode == 1) {
 							this.$refs['Message'].success('登记成功')
 							// 保存openid到状态
-							this.$store.dispatch('refreshRegisterStatus', 1)
+							// this.$store.dispatch('refreshRegisterStatus', 1)
 							let timeout = setTimeout(() => {
 								// 如果是管理员
 								if (this.$store.state.userType == 1) {
@@ -499,19 +551,16 @@
 					})
 				} else {
 					data.id = this.id
-					req.http('updateMyPassLink', data, 'post').then(data => {
+					req.http('updatePassLinkByAdmin', data, 'post').then(data => {
 						uni.hideLoading()
 						if (data.appCode == 1) {
-							this.$refs['Message'].success('登记成功')
+							this.$refs['Message'].success('修改成功')
 							// 保存openid到状态
-							this.$store.dispatch('refreshRegisterStatus', 1)
 							let timeout = setTimeout(() => {
-								// 如果是管理员
-								if (this.$store.state.userType == 1) {
-									this.$routes.redTo('/pages/index/manager')
-								} else {
-									this.$routes.redTo('/pages/index/index')
-								}
+								// const compList = getCurrentPages()
+								// const comp = compList[compList.length - 2]
+								// comp.$vm.loadData()
+								this.$routes.navBack()
 								clearTimeout(timeout)
 							}, 2000)
 						} else {
@@ -536,13 +585,13 @@
 
 			// label宽度
 			.title {
-				min-width: calc(5em + 40px);
+				min-width: calc(5em + 15px);
 			}
-			
+
 			.longTitle {
 				min-width: calc(5em + 45px)
 			}
-			
+
 			.img-tips {
 				color: red;
 				font-size: 24rpx;
@@ -716,9 +765,6 @@
 			margin: 0.8rem;
 			border-radius: 0.5rem;
 			height: unset;
-		}
-		.img-tips {
-			
 		}
 	}
 </style>
