@@ -397,12 +397,14 @@
 					this.$refs['Message'].error('请输入证件号码')
 					return false
 				}
-				// if (
-				// 	/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm) === false
-				// ) {
-				// 	this.$refs['Message'].error('身份证输入不合法')
-				// 	return false
-				// }
+				if (data.zjlx == '01') {
+					if (
+						/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm.trim()) === false
+					) {
+						this.$refs['Message'].error('身份证输入不合法')
+						return false
+					}
+				}
 				if (this.$custom.isEmpty(data.jg)) {
 					this.$refs['Message'].error('请选择籍贯')
 					return false
