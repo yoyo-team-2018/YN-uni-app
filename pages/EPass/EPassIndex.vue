@@ -317,6 +317,7 @@
 					if (!this.$custom.isEmpty(registerData)) {
 						// 数据回显
 						this.dataDisplay(registerData[0])
+						this.ryid = registerData[0].ryid || ''
 						// 打开禁用
 						this.disabledType = true
 					} else {
@@ -330,9 +331,6 @@
 			formSubmit(e) {
 				let data = e.detail.value
 				console.log(data)
-				// this.$store.dispatch('refreshRegisterStatus', 1)
-				// this.$routes.redTo('/pages/index/index')
-				// return
 				if (this.$custom.isEmpty(data.xm)) {
 					this.$refs['Message'].error('请输入姓名')
 					return false
@@ -501,6 +499,7 @@
 					})
 				} else {
 					data.id = this.id
+					data.ryid = this.ryid
 					req.http('updateMyPassLink', data, 'post').then(data => {
 						uni.hideLoading()
 						if (data.appCode == 1) {

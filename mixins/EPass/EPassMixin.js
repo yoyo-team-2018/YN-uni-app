@@ -3,6 +3,9 @@ const mixin = {
 		return {
 			// 在onLoad时传入, 如果有, 意味是update或二次申请出入证, 没有就是第一次申请
 			id: '',
+			
+			// 人员 id ,无特殊用处 , 只是在 form 表单的 update 时传到后台
+			ryid: '',
 	
 			// 控制是否禁用
 			disabledType: false,

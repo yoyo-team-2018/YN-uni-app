@@ -309,12 +309,18 @@
 		computed: mapState([
 			'authorOtherData'
 		]),
+		onUnload() {
+			// 缓存点击项的数据, 用于修改页数据回显
+			this.$store.dispatch('refreshAuthorOtherData', {})
+		},
 		onLoad(val) {;
 			(async () => {
+				console.log(this.authorOtherData)
 				const listData = this.authorOtherData
 				// 传入 id 二次登记, 无 id 首次登记
 				if (listData.hasOwnProperty('id')) {
 					this.id = listData.id
+					this.ryid = listData.ryid || ''
 					uni.setNavigationBarTitle({
 						title: '修改用户授权信息'
 					});
@@ -398,6 +404,7 @@
 					return false
 				}
 				if (data.zjlx == '01') {
+					console.log(data.zjlx)
 					if (
 						/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm.trim()) === false
 					) {
@@ -553,15 +560,13 @@
 					})
 				} else {
 					data.id = this.id
+					data.ryid = this.ryid
 					req.http('updatePassLinkByAdmin', data, 'post').then(data => {
 						uni.hideLoading()
 						if (data.appCode == 1) {
 							this.$refs['Message'].success('修改成功')
 							// 保存openid到状态
 							let timeout = setTimeout(() => {
-								// const compList = getCurrentPages()
-								// const comp = compList[compList.length - 2]
-								// comp.$vm.loadData()
 								this.$routes.navBack()
 								clearTimeout(timeout)
 							}, 2000)
