@@ -39,4 +39,7 @@ module.exports = {
 	getMyRegisterLog:"passReport/getMyRegisterLog",//用户通行记录
 	isAdmin:"passReport/isAdmin",//区分用户
 	getMyInfo:"passLink/getMyInfo",//获取个人信息
+	
+	// 是否有人脸
+	isCheckPhoto: 'miniProgram/checkPhoto',
 }

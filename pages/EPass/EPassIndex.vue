@@ -14,7 +14,8 @@
 				<!-- 证件类型 -->
 				<view class="cu-form-group">
 					<view class="title require-ico">证件类型</view>
-					<picker @change="bindDropChange" data-name="zjlx" :value="zjlxIndex" :range="zjlxList" range-key="dictValue" :disabled="disabledType">
+					<picker @change="bindDropChange" data-name="zjlx" :value="zjlxIndex" :range="zjlxList" range-key="dictValue"
+					 :disabled="disabledType">
 						<view class="picker" :class="disabledType ? 'disabledBg' : ''">
 							{{zjlxIndex>-1?zjlxList[zjlxIndex].dictValue:'请选择'}}
 						</view>
@@ -305,7 +306,7 @@
 		onLoad(val) {
 			// 传入 id 二次登记, 无 id 首次登记
 			if (val.hasOwnProperty('id')) this.id = val.id
-			
+
 			// 初始加载街镇
 			this.getDropJz()
 			// 初始加载证件类型
@@ -345,7 +346,8 @@
 				}
 				if (data.zjlx == '01') {
 					if (
-						/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(data.zjhm.trim()) === false
+						/(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)|(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)/
+						.test(data.zjhm.trim()) === false
 					) {
 						this.$refs['Message'].error('身份证输入不合法')
 						return false
@@ -539,11 +541,11 @@
 			.title {
 				min-width: calc(5em + 40px);
 			}
-			
+
 			.longTitle {
 				min-width: calc(5em + 45px)
 			}
-			
+
 			.img-tips {
 				color: red;
 				font-size: 24rpx;
@@ -718,8 +720,7 @@
 			border-radius: 0.5rem;
 			height: unset;
 		}
-		.img-tips {
-			
-		}
+
+		.img-tips {}
 	}
 </style>

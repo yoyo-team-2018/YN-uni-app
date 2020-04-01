@@ -59,6 +59,9 @@ Vue.filter('rp', function(v) {
 	return str;
 });
 
+import { checkUpdateApp } from './common/updateManager.js'
+checkUpdateApp()
+
 
 Vue.prototype.$fire = new Vue();
 

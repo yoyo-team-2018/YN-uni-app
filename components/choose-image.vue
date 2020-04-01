@@ -1,11 +1,15 @@
 <template>
 	<view class="view">
 		<image :src="hasFid ? echoFid : 'data:image/png;base64,' + imgSrcBase64" mode="aspectFill" @click="handleClick"></image>
+		<!-- 消息提示组件 -->
+		<message ref="Message" :duration="2000" background></message>
 	</view>
 </template>
 
 <script>
-	import { IMAGE_PATH } from '../common/config.js'
+	import {
+		IMAGE_PATH
+	} from '../common/config.js'
 	export default {
 		data() {
 			return {
@@ -29,21 +33,45 @@
 			}
 		},
 		methods: {
-			handleClick() {
-				wx.chooseImage({
+			async handleClick() {
+				uni.chooseImage({
 					count: 1,
+					sizeType: ['compressed'],
 					success: res => {
-						wx.getFileSystemManager().readFile({
+						uni.showLoading({
+							title: '检测照片中!',
+							mask: true
+						});
+						uni.getFileSystemManager().readFile({
 							filePath: res.tempFilePaths[0],
 							encoding: 'base64',
 							success: res => {
-								this.imgSrcBase64 = res.data
+								this.imgSrcBase64 = res.data;
+								this.checkPhoto(this.imgSrcBase64)
 								this.hasFid = false
 								this.$emit('imgSrcBase64', this.imgSrcBase64)
 							}
 						})
 					}
 				})
+			},
+			async checkPhoto(photoBase64) {
+				const {
+					appCode,
+					appMsg
+				} = await this.$request.post(this.$api.isCheckPhoto, {
+					photoBase64
+				})
+				uni.hideLoading()
+				if (appCode == 1) {
+					this.$refs['Message'].success('检测照片通过')
+				} else {
+					uni.showModal({
+						title: '检测不通过',
+						content: `${appMsg}, 请重新选择照片!`,
+						showCancel: false
+					})
+				}
 			}
 		}
 	}
