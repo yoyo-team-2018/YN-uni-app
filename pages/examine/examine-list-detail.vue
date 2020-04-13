@@ -39,8 +39,8 @@
 						<text>{{data.workAddress | tp}}</text>
 					</view>
 					<view class="row-list">
-						<text class="label">身份:</text>
-						<text>{{data.isTenant == 0? "业主" : (data.isTenant == 1 ? "租客" : "") | tp}}</text>
+						<text class="label">授权角色:</text>
+						<text>{{data.sqdx_dict | tp}}</text>
 					</view>
 					<view class="row-list" v-if="data.renterName">
 						<text class="label">房东姓名:</text>
@@ -226,7 +226,10 @@
 				this.loading();
 				let result = await this.$request.post(this.$api.passInApplet,{"openId":this.$store.state.openId,"status":1,"remark":content,id:this.data.id});
 				if(result.appCode == 1){
-					this.jumpPage();
+					this.$refs['Message'].success('提交成功');
+					setTimeout(() => {
+						this.$routes.navBack()
+					}, 2000)
 				}else{
 					this.$refs['Message'].error(result.appMsg);
 				}
@@ -240,9 +243,13 @@
 			// 确认提交输入框(通过审核)
 			async confirm(){
 				this.loading();
+				this.$refs['Message'].success('提交成功');
 				let result = await this.$request.post(this.$api.passInApplet,{"openId":this.$store.state.openId,"status":2,id:this.data.id});
 				if(result.appCode == 1){
-					this.jumpPage();
+					this.$refs['Message'].success('提交成功');
+					setTimeout(() => {
+						this.$routes.navBack()
+					}, 2000)
 				}else{
 					this.$refs['Message'].error(result.appMsg);
 				}

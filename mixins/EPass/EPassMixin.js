@@ -544,8 +544,8 @@ const mixin = {
 					break
 				case 'sqdx': // 授权角色
 					this.sqdxIndex = dropIndex
-					this.sqdx = this.sqdxList[dropIndex].value
-					this.sqdxName = this.sqdxList[dropIndex].name
+					this.sqdx = this.sqdxList[dropIndex].value.toString()
+					this.sqdxName = this.sqdxList[dropIndex].name.toString()
 					break
 				case 'addressType': // 地址类型
 					this.addressTypeIndex = dropIndex

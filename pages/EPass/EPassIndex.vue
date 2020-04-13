@@ -295,6 +295,7 @@
 	import req from '@/common/req.js'
 	import EPassMixin from '../../mixins/EPass/EPassMixin.js'
 	import EPassLoadDataMixin from '../../mixins/EPass/EPassLoadDataMixin.js'
+	const log = require('@/common/log.js')
 	export default {
 		components: {
 			uniPagination,
@@ -304,28 +305,33 @@
 		},
 		mixins: [EPassMixin, EPassLoadDataMixin],
 		onLoad(val) {
-			// 传入 id 二次登记, 无 id 首次登记
-			if (val.hasOwnProperty('id')) this.id = val.id
+			(async () => {
+				// 传入 id 二次登记, 无 id 首次登记
+				if (val.hasOwnProperty('id')) this.id = val.id
 
-			// 初始加载街镇
-			this.getDropJz()
-			// 初始加载证件类型
-			this.getZjlx(() => {
-				this.getSqdx(() => {
-					// 获取登记数据
-					const registerData = this.$store.state.registerData
-					// 回显数据
-					if (!this.$custom.isEmpty(registerData)) {
-						// 数据回显
-						this.dataDisplay(registerData[0])
-						this.ryid = registerData[0].ryid || ''
-						// 打开禁用
-						this.disabledType = true
-					} else {
-						this.registerData = ''
-					}
-				})
-			})
+				// 获取街镇,证件类型,授权对象 字典
+				const PromiseArr = [this.getDropJz(), this.getZjlx(), this.getSqdx()]
+				
+				try{
+					await Promise.all(PromiseArr)
+				}catch(e){
+					console.error(e)
+					log.error(e)
+				}
+				
+				// 获取登记数据
+				const registerData = this.$store.state.registerData
+				// 回显数据
+				if (!this.$custom.isEmpty(registerData)) {
+					// 数据回显
+					this.dataDisplay(registerData[0])
+					this.ryid = registerData[0].ryid || ''
+					// 打开禁用
+					this.disabledType = true
+				} else {
+					this.registerData = ''
+				}
+			})()
 		},
 		methods: {
 			// 提交请求

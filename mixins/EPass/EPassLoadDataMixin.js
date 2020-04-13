@@ -170,12 +170,14 @@ const EPassLoadDataMixin = {
 			} = await this.$request.post(
 				this.$api.getSqdx
 			)
+			const arr = []
 			for(const i of data) {
-				this.sqdxList.push({
+				arr.push({
 					name: i.dictValue,
 					value: i.dictCode
 				})
 			}
+			this.sqdxList = arr
 			callback()
 		},
 	}

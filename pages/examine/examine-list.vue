@@ -54,7 +54,7 @@
 				canFetch:false,// 判断是否有数据，点击下一页时会判断
 			};
 		},
-		onLoad() {
+		onShow() {
 			this.loadExamineList();
 		},
 		methods: {

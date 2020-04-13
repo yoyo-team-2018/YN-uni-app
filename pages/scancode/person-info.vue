@@ -46,8 +46,8 @@
 						<text>{{personnelInfo.workAddress}}</text>
 					</view>
 					<view class="row-list">
-						<text class="label">身份:</text>
-						<text>{{personnelInfo.isTenant == 0 ? "业主" : (personnelInfo.isTenant == 1 ? "租客" : "")}}</text>
+						<text class="label">授权角色:</text>
+						<text>{{personnelInfo.sqdx_dict || ''}}</text>
 					</view>
 					<view class="row-list" v-if="personnelInfo.renterName">
 						<text class="label">房东姓名:</text>

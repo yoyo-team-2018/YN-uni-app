@@ -1,6 +1,5 @@
 {
 	"pages": [
-
 		{
 			"path": "pages/index/index", //T享家(用户)
 			"style": {
@@ -102,36 +101,32 @@
 				"navigationBarTitleText": "出入地址详情",
 				"navigationBarBackgroundColor": "#fff"
 			}
+		}, {
+			"path": "pages/agreement/user-service-agreement",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "用户服务协议",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		}, {
+			"path": "pages/agreement/privacy-policy",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "隐私政策",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		}, {
+			"path": "pages/author-other/author-other",
+			"style": {
+				"navigationBarTitleText": "授权其他用户"
+			}
+		}, {
+			"path": "pages/Pass-link-check/Pass-link-check",
+			"style": {
+				"navigationBarTitleText": "授权用户列表"
+			}
 		}
-	    ,{
-            "path" : "pages/agreement/user-service-agreement",
-            "style": {
-            	"navigationBarTextStyle": "black",
-            	"navigationBarTitleText": "用户服务协议",
-            	"navigationBarBackgroundColor": "#fff"
-            }
-        }
-        ,{
-            "path" : "pages/agreement/privacy-policy",
-            "style": {
-            	"navigationBarTextStyle": "black",
-            	"navigationBarTitleText": "隐私政策",
-            	"navigationBarBackgroundColor": "#fff"
-            }
-        }
-        ,{
-            "path" : "pages/author-other/author-other",
-            "style" : {
-							"navigationBarTitleText": "授权其他用户"
-						}
-        }
-        ,{
-            "path" : "pages/Pass-link-check/Pass-link-check",
-            "style" : {
-							"navigationBarTitleText": "授权用户列表"
-						}
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black", //全局顶部文字颜色
 		// "navigationBarTitleText": "凤凰街",//全局顶部文字

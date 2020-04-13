@@ -295,6 +295,8 @@
 	import req from '@/common/req.js'
 	import EPassMixin from '../../mixins/EPass/EPassMixin.js'
 	import EPassLoadDataMixin from '../../mixins/EPass/EPassLoadDataMixin.js'
+	const log = require('@/common/log.js')
+	
 	import {
 		mapState
 	} from 'vuex'
@@ -315,7 +317,6 @@
 		},
 		onLoad(val) {;
 			(async () => {
-				console.log(this.authorOtherData)
 				const listData = this.authorOtherData
 				// 传入 id 二次登记, 无 id 首次登记
 				if (listData.hasOwnProperty('id')) {
@@ -325,11 +326,15 @@
 						title: '修改用户授权信息'
 					});
 				}
-				// 初始加载街镇
-				await this.getDropJz()
-				// 初始加载证件类型
-				await this.getZjlx()
-				await this.getSqdx()
+				// 获取街镇,证件类型,授权对象 字典
+				const PromiseArr = [this.getDropJz(), this.getZjlx(), this.getSqdx()]
+				
+				try{
+					await Promise.all(PromiseArr)
+				}catch(e){
+					console.error(e)
+					log.error(e)
+				}
 
 				// 回显数据
 				if (!this.$custom.isEmpty(listData)) {
